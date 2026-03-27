@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>WeCom Proxy</title>
+</head>
+<body>
+  <p>WeCom Proxy Service</p>
+  <script>
+    // 获取当前路径和查询参数
+    const path = window.location.pathname.replace('/wecom-proxy', '');
+    const search = window.location.search;
+    
+    // 转发到 Cloudflare Worker
+    const targetUrl = 'https://wecom-proxy.zsy-37210.workers.dev' + path + search;
+    
+    // 使用 fetch 转发请求
+    fetch(targetUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.text())
+    .then(data => {
+      document.body.innerHTML = '<pre>' + data + '</pre>';
+    })
+    .catch(err => {
+      document.body.innerHTML = '<p>Error: ' + err + '</p>';
+    });
+  </script>
+</body>
+</html>
